@@ -41,6 +41,46 @@ activities = {
     }
 }
 
+# Additional activities
+activities.update({
+    "Basketball Team": {
+        "description": "Competitive basketball team for inter-school games",
+        "schedule": "Mondays, Wednesdays, Fridays, 4:00 PM - 6:00 PM",
+        "max_participants": 15,
+        "participants": ["alex@mergington.edu", "sam@mergington.edu"]
+    },
+    "Swimming Club": {
+        "description": "Lap swimming and stroke improvement sessions",
+        "schedule": "Tuesdays and Thursdays, 5:00 PM - 6:30 PM",
+        "max_participants": 20,
+        "participants": ["lily@mergington.edu"]
+    },
+    "Art Club": {
+        "description": "Explore drawing, painting, and mixed media projects",
+        "schedule": "Wednesdays, 3:30 PM - 5:00 PM",
+        "max_participants": 18,
+        "participants": ["nora@mergington.edu"]
+    },
+    "Drama Club": {
+        "description": "Acting, stagecraft, and production for school plays",
+        "schedule": "Thursdays, 3:30 PM - 6:00 PM",
+        "max_participants": 25,
+        "participants": ["ethan@mergington.edu"]
+    },
+    "Debate Team": {
+        "description": "Competitive debate team focusing on public speaking and argumentation",
+        "schedule": "Tuesdays, 4:00 PM - 5:30 PM",
+        "max_participants": 16,
+        "participants": ["ava@mergington.edu"]
+    },
+    "Math Olympiad": {
+        "description": "Advanced problem solving and competition preparation",
+        "schedule": "Fridays, 4:00 PM - 5:30 PM",
+        "max_participants": 12,
+        "participants": ["liam@mergington.edu"]
+    }
+})
+
 
 @app.get("/")
 def root():
@@ -61,6 +101,10 @@ def signup_for_activity(activity_name: str, email: str):
 
     # Get the specific activity
     activity = activities[activity_name]
+
+    # Validate student is not already signed up
+    if email in activity["participants"]:
+        raise HTTPException(status_code=400, detail="Student already signed up for this activity")
 
     # Add student
     activity["participants"].append(email)
